@@ -1,0 +1,5 @@
+DIRS= \
+altest \
+autolaunch \
+startservice \
+sys

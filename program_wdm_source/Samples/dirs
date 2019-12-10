@@ -1,0 +1,17 @@
+DIRS= \
+Generic \
+Chap2 \
+Chap3 \
+Chap4 \
+Chap6 \
+Chap7 \
+Chap8 \
+Chap9 \
+Chap10 \
+Chap11 \
+Chap12 \
+Chap13 \
+Chap14 \
+Chap15 \
+Chap16 \
+AppendixA

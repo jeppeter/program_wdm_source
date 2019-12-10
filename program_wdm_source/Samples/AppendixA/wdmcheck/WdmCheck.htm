@@ -1,0 +1,94 @@
+<html>
+<head>
+<title>WdmCheck Utility</title>
+</head>
+
+<h1>The WDMCHECK Sample</h1>
+
+<p>The WDMCHECK Sample accompanies Appendix A and illustrates how to check a
+driver to see if it imports functions that Windows 98 doesn’t support.</p>
+
+<p>The sample includes two components:</p>
+
+<ul>
+ <li>WDMCHECK.EXE (EXE subdirectory) is a user-mode application for Windows 98 or later.</li>
+ <li>WDMCHECK.VXD (VXD subdirectory) is a dynamically loaded virtual device driver that
+     WDMCHECK.EXE uses as a utility.</li>
+</ul>
+
+<h2>Building WDMCHECK</h2>
+
+<p>To build WDMCHECK.VXD, open the Microsoft Visual C++ project file named
+VXD\WDMCHECK.DSP and select the Build command from the Build menu. The build
+script depends on your having set the 98DDK environment variable to the
+directory where you installed the Windows 98 DDK. Depending on which version of
+the DDK you have, you may need to adjust the include or library paths in the
+project settings.</p>
+
+<h2>Using WDMCHECK</h2>
+
+<p>WDMCHECK runs only in Windows 98 or a
+later edition of Windows, such as Millenium. Run WDMCHECK from a command prompt
+with an argument naming the driver you want to check. E.g.:<o:p></o:p></span></p>
+
+<p>C:\&gt;wdmcheck
+c:\myproject\objchk\i386\mydriver.sys</p>
+
+<p>If your driver doesn't import any symbols that the
+Windows kernel fails to define, you'll see this message:</p>
+
+<pre>
+&nbsp;Module has no missing import links
+</pre>
+
+<p>If your driver *does* import symbols that
+the Windows kernel fails to define, you'll see a message like this one: </p>
+
+<pre>
+&nbsp;Module uses the following missing functions:
+&nbsp;MmMapLockedPagesSpecifyCache
+</pre>
+
+<p>(Incidentally, MmMapLockedPagesSpecifyCache would indicate you've called
+MmGetSystemAddressForMdlSafe. Look at the StartIo routine in my LOOPBACK sample
+driver for an illustration of how to do that in a portable way.)</p>
+
+<h3>How WDMCHECK validates imported symbols</h3>
+
+<p>WDMCHECK uses two different ways to detect
+missing import symbols, depending on which library is supposed to contain the
+symbol. In some cases, there is a Windows VxD that creates loader table entries
+to define symbols that, in Windows 2000, would be defined by the operating
+system kernel or by a standard Microsoft driver. Such libraries include
+ntoskrnl.exe, hal.dll, ndis.sys, and scsi.sys. For these libraries, WDMCHECK
+uses a kernel-mode helper function to see if the referenced symbols have been
+defined.</p>
+
+<p>In other cases, Windows loads a kernel-mode
+library to satisfy the import references from your driver. Examples of this
+case include USBD.SYS, SMCLIB.SYS, and many others. For these libraries,
+WDMCHECK looks in the %WINDIR%\system32\drivers directory (only) and tries to
+find the symbols your driver imports in the export directory for the library.</p>
+
+<h3>If you're running WDMSTUB...</h3>
+
+<p >If you run WDMCHECK on a system where
+you've installed <a href="..\Newstub\Wdmstub.htm">WDMSTUB.SYS</a>, you may
+receive a report like this one:</p>
+
+<pre>
+&nbsp;Module uses the following missing functions:
+&nbsp;IoAllocateWorkItem (exported by WDMSTUB)
+</pre>
+
+<p>This message is warning you that your driver is calling a
+kernel function that, but for the presence of WDMSTUB, would have been unresolved.
+You will need to ship WDMSTUB along with your driver if you want it to run
+under the same version of Windows 98 on end-user computers.</p>
+
+<h3>What to look for</h3>
+<p>WDMCHECK is a production tool rather than a sample. I've included the source code because I
+couldn't think of a reason not to.</p>
+
+</body>
+</html>

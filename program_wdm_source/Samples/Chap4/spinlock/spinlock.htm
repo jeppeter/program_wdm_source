@@ -1,0 +1,35 @@
+<HTML>
+</HEAD>
+<BODY>
+
+<H2>The SPINLOCK Sample</H2>
+<P>The SPINLOCK Sample accompanies Chapter 3 and illustrates how to use in-stack queued spin locks in a system portable way.
+This sample was added to the 2d edition.</P>
+
+<P>The sample includes one component:</P>
+
+<UL>
+<LI>SPINLOCK.SYS is a WDM driver for a non-existent hardware device. </LI></UL>
+
+<H3>Building SPINLOCK</H3>
+<P>To build SPINLOCK.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named SPINLOCK.DSP.</P>
+<H3>Testing SPINLOCK</H3>
+<P>Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in 
+Windows XP or Windows 98/Me. The INF file is named SPINLOCK.INF.</P>
+
+<p>I recommend that you have some means of viewing debug messages when you install this sample so that you can see whether
+the portable spinlock package has chosen to use regular spin locks or in-stack queued spin locks. You could, for example,
+download DbgView from <a href="http://www.sysinternals.com">http://www.sysinternals.com</a>.</p>
+
+<h3>Special Note:</h3>
+The "portable" code in <b>spinlock.cpp</b> calls <b>MmGetSystemRoutineAddress</b>, which is not available in
+Windows 98/Me unless you ship <a href="..\..\AppendixA\newstub\wdmstub.htm">wdmstub.sys</a> with your driver.
+
+<h3>What to look for</h3>
+<p>The file <b>spinlock.h</b> declares a platform-portable DDI for accessing in-stack queued spin
+locks when they happen to be available. This file also contains usage instructions. <b>StartDevice</b>
+(ReadWrite.cpp) illustrates how to use these functions, which are implemented in <b>spinlock.cpp</b>.
+The latter file shows how to use <b>MmGetSystemRoutineAddress</b>, too.</p>
+
+</BODY>
+</HTML>

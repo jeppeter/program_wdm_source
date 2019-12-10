@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<TITLE>The POWTRACE Sample</TITLE>
+</HEAD>
+<BODY>
+
+<H2>The POWTRACE Sample</H2>
+<P>The POWTRACE Sample accompanies Chapter 16 and provides a way to trace power management IRPs in a device stack.</P>
+<P>The sample includes one component:</P>
+
+<UL>
+<LI>POWTRACE.SYS is a WDM lower filter driver.</LI>
+</ul>
+
+<H3>Building POWTRACE</H3>
+<P>To build POWTRACE.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named SYS\POWTRACE.DSP.</P>
+<H3>Testing POWTRACE</H3>
+<P>Right-click on the SYS\POWTRACE.INF file and select the Install choice from the context menu. Setup will copy POWTRACE.SYS into the Drivers directory, and it will define the POWTRACE service. <I>Note that you should not use FASTINST or the Add New Hardware wizard to install POWTRACE.SYS.</i></P>
+<P>Now edit the registry by hand to add POWTRACE as a lower filter for some device. The next time you start this device, POWTRACE.SYS will print debugging messages for IRPs related to power management. You’ll need to be running a debugger or DbgView to see these messages. You can restart most devices in Windows XP by disabling and then reenabling them. In Windows 98/Me, you generally need to reboot the computer.</P>
+
+<h3>What to look for</h3>
+<p>POWTRACE is probably more useful as a tool than as a sample. All the code is in the <b>DriverEntry.cpp</b>
+file if you want to see how it works.</p>
+
+</BODY>
+</HTML>

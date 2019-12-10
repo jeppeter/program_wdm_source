@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<TITLE>The HIDFAKE Sample</TITLE>
+</HEAD>
+<BODY>
+
+<H2>The HIDFAKE Sample</H2>
+<P>The HIDFAKE Sample accompanies Chapter 13 and illustrates how to build a HID minidriver for a non-standard HID device.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>HIDFAKE.SYS (SYS subdirectory) is a WDM driver for nonexistent hardware. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a dialog-based application for testing HIDFAKE.SYS. </LI>
+</ul>
+
+<H3>Building HIDFAKE</H3>
+<P>To build HIDFAKE.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named HIDFAKE.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing HIDFAKE</H3>
+<P>Install HIDFAKE.SYS. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows XP or Windows 98/Me. The INF file is named SYS\HIDFAKE.INF.</P>
+<P>Now launch TEST.EXE from the TEST\DEBUG directory. TEST presents a dialog box like this:<p>
+<img src=hidfake.jpg>
+<p>When it starts up, TEST reads a feature report from the driver to determine the revision level (1.00 in this picture) of the driver.
+Each time you press one of the radio buttons, TEST writes a feature report to the driver. The driver continuously reports the setting of the
+fake button it contains.</p>
+
+<h3>What to look for</h3>
+<p>The files named <b>DriverEntry.cpp</b> and <b>Control.cpp</b> contain the code that interfaces with
+HIDCLASS, which is the whole point of this sample. It's all important, unfortunately.</p>
+
+</BODY>
+</HTML>

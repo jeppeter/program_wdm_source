@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>The InterfaceEnum Sample</title>
+</head>
+
+<body>
+
+<h2>The INTERFACEENUM Sample</h2>
+
+<p>The INTERFACEENUM Sample accompanies Chapter 2 and illustrates how to locate
+the devices that support particular interfaces. This sample was part of Service
+Pack 5 in the 1st edition.</p>
+
+<p>The sample includes one component:</p>
+
+<ul>
+<li>InterfaceEnum.EXE is a console-mode application that enumerates all registered device interfaces.</li>
+</ul>
+
+<h3>Building INTERFACEENUM</h3>
+
+<p>To build InterfaceEnum.EXE, follow the <a
+href="..\..\wdmbook.htm#usermodebuild">general instructions for building
+user-mode samples</a></p>
+
+<h3>Testing INTERFACEENUM</h3>
+
+<p>Execute InterfaceEnum.EXE from a command prompt. It will enumerate all the
+registered device interfaces on your computer. For each interface, it will
+report the friendly names of all devices that have registered that interface.</p>
+
+<h3>What to look for</h3>
+<p>InterfaceEnum.cpp uses several SetupDiXxx functions to enumerate instances of a great many
+registered interfaces.</p>
+
+</body>
+</html>

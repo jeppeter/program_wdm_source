@@ -1,0 +1,15 @@
+TARGETNAME=SAMPLECOINSTALLERDUMMY
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+TARGETPATH=obj
+USE_PDB=1
+
+TARGETLIBS= \
+	$(WDMBOOK)\generic\obj$(BUILD_ALT_DIR)\*\generic.lib \
+
+INCLUDES=$(WDMBOOK)\generic
+
+
+SOURCES=	DriverEntry.cpp \
+			ReadWrite.cpp \
+			driver.rc

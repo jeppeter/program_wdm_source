@@ -1,0 +1,54 @@
+; INF file for installing POWTRACE service
+; Copyright (C) 2002 by Walter Oney
+; All rights reserved
+
+; Install this INF file using the Install choice from the context menu. Then hand
+; edit the registry to add POWTRACE as a LowerFilter for whatever device you want
+; to filter.
+
+[Version]
+Signature=$CHICAGO$
+Provider=%MFGNAME%
+
+[DestinationDirs]
+DefaultDestDir=10,system32\drivers
+FiltJectCopyFiles=11
+
+[SourceDisksFiles]
+powtrace.sys=1,objchk~1\i386,
+
+[SourceDisksNames]
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DefaultInstall.ntx86]
+CopyFiles=DriverCopyFiles
+
+[DriverCopyFiles]
+powtrace.sys,,,0x60		; replace newer, suppress dialog
+
+[DefaultInstall.ntx86.services]
+AddService=powtrace,,powtraceService
+
+[powtraceService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\powtrace.sys
+
+;------------------------------------------------------------------------------
+;  Windows 98 Sections
+;------------------------------------------------------------------------------
+
+[DefaultInstall]
+CopyFiles=DriverCopyFiles
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="Walter Oney Software"
+INSTDISK="WDM Book Companion Disc"

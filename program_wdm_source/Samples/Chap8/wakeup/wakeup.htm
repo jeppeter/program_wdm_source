@@ -1,0 +1,49 @@
+<html>
+<head>
+</head>
+<body>
+
+<h2>The WAKEUP Sample</h2>
+
+<p>The WAKEUP Sample accompanies Chapter 8 and illustrates (a) how to implement system wakeup functionality using GENERIC.SYS, and
+(b) how to use the USB "selective suspend" feature support added in Windows XP. This sample was part of the 2d edition of the book</p>
+
+<p>This sample includes one component:</p>
+
+<ul>
+<li>WAKEUP.SYS is a WDM driver for a non-existent hardware device.
+</ul>
+
+<h3>Building WAKEUP</h3>
+<P>To build WAKEUP.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named WAKEUP.DSP.</P>
+
+<h3>Testing WAKEUP</h3>
+
+<p>First plug in a USB device that is capable of waking the system using its standard drivers. In my testing, I used a Microsoft USB mouse. <b>Be sure that your computer actually
+will wakeup in response to a USB device when you put it into standby. Many computers will not, due to various hardware and software restrictions.</b>
+<p>Use the Device Manager's "Update Driver" dialogs to replace the existing driver with WAKEUP. In Windows XP, you must force the setup program through the path
+that leads to you pressing the "Have Disk" button and pointing to the WAKEUP directory.
+<p>The Device Manager's Power Management tab on the properties for the WAKEUP device should present the options "Allow this device to bring the computer out of standby"
+and "Allow the computer to turn off this device to save power." I'll refer to the first of these as the "wakeup" option and the second of them as the "automatic power" option.
+<p>Provide a method of viewing debug messages. For example, you could download DbgView from <a href="http://www.sysinternals.com">http://www.sysinternals.com</a>.
+<p>Set the wakeup option but not the automatic power option. Place the computer into standby. Do whatever the device requires to signal a wakeup event. E.g., press one of the mouse
+buttons. Observe that the computer wakes up. The debug trace will show the progress of the IRP_MN_WAIT_WAKE request issued by the driver.
+<p>Clear the wakeup option and set the automatic power option. As soon as the WAKEUP device is the only USB device present, you should notice from the debug trace that
+the driver's <b>IOCTL_INTERNAL_USB_SUBMIT_IDLE_NOTIFICATION</b> callback routine gets called and puts the device into the D3 state.
+<p>Set both power options. As soon as the WAKEUP device is the only USB device present, the driver should put the device into the D2 state. Signalling a wakeup event (e.g., by
+pressing the mouse button) should cause the driver's WAIT_WAKE request to complete, whereupon the driver should put the device into the D0 state.
+
+<h3>What to look for</h3>
+<p>This sample is overly complex, just as are the system interfaces that you have to use for wakeup
+and selective suspend. Here is where to look for the main points in this sample:</p>
+
+<ul>
+<li><b>Wmi.cpp</b> handles the standard WMI controls related to power management.
+<li><b>ChangeAutoPower</b> (power.cpp) handles changes in the "Allow the computer to turn off this
+device to save power" option.
+<li><b>ChangeWakeupEnable</b> (power.cpp) handles changes in the "Allow this device to bring the
+computer out of standby" option.
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+DIRS= \
+s5933dk1 \
+addonsim \
+test \
+sys

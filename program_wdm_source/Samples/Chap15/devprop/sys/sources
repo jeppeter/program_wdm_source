@@ -1,0 +1,11 @@
+TARGETNAME=devprop
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+USE_PDB=1
+INCLUDES=$(WDMBOOK)\GENERIC
+TARGETLIBS=$(WDMBOOK)\GENERIC\obj$(BUILD_ALT_DIR)\*\generic.lib \
+	   $(DDK_LIB_PATH)\wmilib.lib 
+SOURCES= 	DriverEntry.cpp \
+		ReadWrite.cpp \
+		stddcls.cpp \
+		driver.rc 

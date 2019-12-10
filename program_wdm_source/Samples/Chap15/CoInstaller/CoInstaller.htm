@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<TITLE>The COINSTALLER Sample</TITLE>
+</HEAD>
+<BODY>
+
+<H2>The COINSTALLER Sample</H2>
+<P>The COINSTALLER Sample accompanies Chapter 15 and illustrates how to write a coinstaller DLL using Microsoft Foundation Classes.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>SampleCoinstallerDummy.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>SAMCOIN.DLL (DLL subdirectory) is a device-specific coinstaller DLL for that device.</LI>
+</UL>
+
+<H3>Building COINSTALLER</H3>
+<P>To build COINSTALLER.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named SampleCoinstallerDummy.dsp in the SYS subdirectory.</P>
+<P>To build SAMCOIN.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named SampleCoinstaller.DSP in the DLL subdirectory.</P>
+<H3>Testing COINSTALLER</H3>
+<p>Since Windows 98/Me does't support coinstaller DLLs, there's not much point in testing this sample in that environmnet.
+<p>Follow the instructions for using <a href="../../wdmbook.htm#fastinst">FASTINST</a> to install the dummy device. The INF file is named <b>SampleCoinstallerDummy.inf</b> in the SYS directory.
+During the install, setup will present a custom wizard page to allow you to change the ProgrammersShoeSize parameter. This wizard page is
+intended purely to show you how you can perform some user interaction during setup. It's not the best example of this genre, perhaps, because
+the change won't take effect until you manually disable and reenable the device.</p>
+<p>Once the device is installed, the Device Manager property sheet will include a Shoe Size page that you can use to change the value
+of ProgrammersShoeSize. This property page gives you an option to force a device restart after you click on OK to dismiss the
+property sheet.</p>
+
+<h3>What to look for</h3>
+<p>This sample contains the following noteworthy things, all in the <b>dll</b> directory:</p>
+
+<ul>
+<li>The coinstaller and external dialog classes in <b>CoInstaller.cpp</b> and <b>ExternalDialog.cpp</b>. These
+are general-purpose classes that you can copy to your own MFC-based coinstaller project.
+<li>The <b>CShoeSize</b> wizard page in <b>ShoeSize.cpp</b>.
+<li>The <b>CShoeSizeProperty</b> property page in <b>ShoeSizeProperty.cpp</b>.
+<li>The <b>SampleCoinstaller.cpp</b> file itself, which shows how to combine the various classes into a coinstaller DLL.
+</ul>
+
+</BODY>
+</HTML>

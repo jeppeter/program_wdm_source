@@ -1,0 +1,5 @@
+NAME GENERIC.SYS
+
+EXPORTS
+	DllInitialize private
+	DllUnload private

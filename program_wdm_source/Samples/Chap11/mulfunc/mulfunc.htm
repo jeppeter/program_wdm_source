@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<TITLE>The MULFUNC Sample</TITLE>
+</HEAD>
+<BODY>
+
+<H2>The MULFUNC Sample</H2>
+<P>The MULFUNC Sample accompanies Chapter 11 and illustrates how to create a driver for a non-standard multifunction device.</P>
+<B><I><P>You would not use the MULFUNC method for a USB, PCI, or PCMCIA multifunction device unless the device doesn't conform to the bus specification. Refer to the DDK documentation on multifunction devices for more information.</P>
+</B></I><P>The sample includes four components:</P>
+
+<UL>
+<LI>MULFUNC.SYS (SYS subdirectory) is a WDM driver for a non-existent multifunction device. </LI>
+<LI>CHILDA.SYS (ChildA subdirectory) is a WDM driver for one of the functions of the MULFUNC device. </LI>
+<LI>CHILDB.SYS (ChildB subdirectory) is a WDM driver for the other function of the MULFUNC device.</LI>
+<LI>SUBALLOC.SYS (SUBALLOC subdirectory) is a WDM filter driver that "suballocates" I/O resources belonging to the parent multifunction device for use by the child function drivers.</LI></UL>
+
+<H3>Building MULFUNC</H3>
+<P>To build MULFUNC.SYS, CHILDA.SYS, CHILDB.SYS and SUBALLOC.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project files are named MULFUNC.DSP, CHILDA.DSP, CHILDB.DSP and SUBALLOC.DSP in the SYS, CHILDA, CHILDB and SUBALLOC subdirectories, respectively.</P>
+<H3>Testing MULFUNC</H3>
+<P>Install the MULFUNC "device". Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows XP or Windows 98/Me. The INF file is named SYS\DEVICE.INF.</P>
+<P>Following the installation of MULFUNC, the system will automatically install the CHILDA and CHILDB drivers. You will see this happening because I didn't take any steps to suppress the user interface.</P>
+
+<h3>What to look for</h3>
+<p>The hard part of writing a multifunction driver is handling PnP requests sent down to the PDO from
+a child device and maintaining the list of child PDOs. Refer to <b>PlugPlayFdo.cpp</b> and
+<b>PlugPlayPdo.cpp</b> in the <b>sys</b> directory, and pay close attention to the prose description in the book of what the IRP_MJ_PNP
+dispatch routine does.</p>
+
+</BODY>
+</HTML>

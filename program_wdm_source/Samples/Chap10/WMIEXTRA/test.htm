@@ -1,0 +1,150 @@
+<html>
+<head>
+<title>WMIEXTRA Test Page</title>
+</head>
+
+<body>
+<h1>WMIEXTRA Test Page</h1>
+
+<form name=TestForm>
+
+<p>This page allows you to test the three "extra" pieces of WMI functionality in the
+WMIEXTRA sample driver. I recommend that you have a DbgView window open
+(see <a href="http://www.sysinternals.com">www.sysinternals.com</a>) so you
+can see the messages produced by the driver.</p>
+
+<hr>
+<h2>Event signalling</h2>
+<p>Press this button to cause the driver to fire the wmiextra_event event:</p>
+
+<p><input name=FireEventButton type=button value="Fire Event">&nbsp;&nbsp;
+wmiextra_event:&nbsp;&nbsp;<input type="text" name="wmiextra_event"></p>
+
+<hr>
+<h2>Expensive data classes</h2>
+<p>Press this button to cause the driver to begin collecting the wmiextra_expensive
+statistics. Observe that the driver gets a FunctionControl call when you do this.</p>
+
+<input type=button name=CollectButton value="Collect">
+
+<p>After pressing the above button, press this one to retrieve the statistic.</p>
+
+<input type=button name=RetrieveButton value="Retrieve">&nbsp;&nbsp;
+wmiextra_expensive:&nbsp;&nbsp;
+<input type=text name="wmiextra_expensive">
+
+<p>Finally, press this button to stop collecting the wmiextra_expensive statistic:</p>
+
+<input type=button name=StopCollectButton value="Stop Collecting">
+
+<hr>
+<h2>Function methods:</h2>
+<p>Enter a numeric argument for a call to the AnswerMethod in wmiextra_method,
+and then press the "Execute" button:</p>
+
+<p>
+<input type=text name="InputValue">&nbsp;&nbsp;
+<input type=button name=ExecuteButton value="Execute">&nbsp;&nbsp;
+<input type=text name="OutputValue">
+</p>
+
+<script language="VBScript">
+<!--
+
+Dim Locator
+Dim Service
+Dim ExpensiveObject
+Dim Collecting
+
+Sub window_onload
+	Set Locator = CreateObject("WbemScripting.SWbemLocator")
+	Locator.Security_.Privileges.AddAsString "SeSecurityPrivilege"
+	Set Service = Locator.ConnectServer(, "root\wmi")
+	Service.Security_.ImpersonationLevel=3
+	On Error Resume Next
+	Err.Clear
+	Service.ExecNotificationQueryAsync eventsink, "select * from wmiextra_event"
+
+	if Err.Number <> 0 Then
+		MsgBox Err.Description,, "Error Registering for event"
+	End If
+
+	Document.TestForm.InputValue.Value = 42
+	Collecting = 0
+End Sub
+
+Sub FireEventButton_OnClick
+	Set Collection = Service.InstancesOf("wmiextra_event_test")
+	For each Instance in Collection
+		Instance.FireTheEvent = 1
+		Instance.Put_()
+	Next
+End Sub
+
+Sub CollectButton_OnClick
+	Set Collection = Service.InstancesOf("wmiextra_expensive")
+	For each Instance in Collection
+		Set ExpensiveObject = Instance
+		Collecting = 1
+	Next
+End Sub
+
+Sub RetrieveButton_OnClick
+	On Error Resume Next
+	if Collecting <> 0 Then 
+		Err.Clear
+		Document.TestForm.wmiextra_expensive.Value = ExpensiveObject.ExpensiveData	
+		if Err.Number <> 0 Then
+			MsgBox Err.Description
+		End If
+	End If
+End Sub
+
+Sub StopCollectButton_OnClick
+	Set ExpensiveObject = Nothing
+	Collecting = 0
+End Sub
+
+Sub	ExecuteButton_OnClick
+	Dim Collection
+	Dim ObjectPath
+	Dim MethodObject
+
+	On Error Resume Next
+	Err.Clear
+	Set Collection = Service.InstancesOf("wmiextra_method")
+	if Err.Number <> 0 Then
+		MsgBox Err.Description
+		Exit Sub
+	End If
+	if Collection.Count = 0 Then
+		MsgBox "No instances of wmiextra_method"
+		Exit Sub
+	End If
+
+	For each Instance in Collection
+		Err.Clear
+		TheAnswer = Document.TestForm.InputValue.Value
+		Instance.AnswerMethod TheAnswer
+		if Err.Number = 0 Then
+			Document.TestForm.OutputValue.Value = TheAnswer
+		Else
+			MsgBox Err.Description,,"Execution failed"
+		End If
+	Next
+	
+End Sub
+
+--> 
+</script>
+
+<script for="eventsink" event="OnObjectReady(Instance, objAsyncContext)" language="VBScript">
+  alert("wmiextra_event signalled")
+  Document.TestForm.wmiextra_event.Value = Instance.EventInfo
+</script>
+
+</form>
+
+<OBJECT ID="eventsink" CLASSID="CLSID:75718C9A-F029-11d1-A1AC-00C04FB6C223"></OBJECT>
+</body>
+</html>

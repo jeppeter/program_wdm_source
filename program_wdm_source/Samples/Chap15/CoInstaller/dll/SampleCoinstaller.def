@@ -1,0 +1,7 @@
+; SampleCoinstaller.def : Declares the module parameters for the DLL.
+
+LIBRARY      "SAMCOIN"
+DESCRIPTION  'SampleCoinstaller Windows Dynamic Link Library'
+
+EXPORTS
+    CoinstallerProc	

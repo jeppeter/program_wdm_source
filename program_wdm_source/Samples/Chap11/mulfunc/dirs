@@ -1,0 +1,5 @@
+DIRS= \
+childa \
+childb \
+suballoc \
+sys

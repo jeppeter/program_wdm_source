@@ -1,0 +1,1 @@
+PNPMON service entry required in Win98 registry

@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<TITLE>The PIOFAKE Sample</TITLE>
+</HEAD>
+<BODY>
+
+<H2>The PIOFAKE Sample</H2>
+<P>The PIOFAKE Sample accompanies Chapter 14 and illustrates how to program a simple programmed I/O device and how to use a watchdog timer.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>PIOFAKE.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a user-mode test program that tries to write data to the PIOFAKE device.</LI></UL>
+
+<H3>Building PIOFAKE</H3>
+<P>To build PIOFAKE.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named PIOFAKE.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing PIOFAKE</H3>
+<P>Install the PIOFAKE "device." Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows XP, Xp or Windows 98/Me. 
+<b><span style='color:red'>Do not use FASTINST in Windows Millennium. For reasons I don't understand, FASTINST precipatates a ring-0 page fault with this one sample only. Use the Add New Hardware wizard from Control Panel instead.</span></b>
+The INF file is named SYS\PIOFAKE.INF. Take note of the IRQ and port address that the PnP Manager assigns.</P>
+<P>Launch the DEVTEST.EXE program that you'll find in the directory where you installed the book samples (e.g., WDMBOOK). Fill in the port address and IRQ, and then press the Initialize button:</P>
+<P><IMG SRC="devtest.jpg"></P>
+<P>Now open a command prompt and launch TEST.EXE from the TEST\DEBUG subdirectory. The letter "H" should appear in the Device Data control of the DEVTEST dialog. If you press the Interrupt button before 10 seconds elapse, you'll see the second character of the output string TEST is trying to write. You can continue pressing the Interrupt button to see the rest of the message, but you'll be able to guess the contents long before it finishes printing. Delay more than 10 seconds to see the write operation time out.</P>
+
+<h3>What to look for</h3>
+<p>The file <b>ReadWrite.cpp</b> contains the important subroutines in this sample.</p>
+
+</BODY>
+</HTML>

@@ -1,0 +1,145 @@
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11D2-821E-444553540000}
+Provider=%MFGNAME%
+
+;------------------------------------------------------------------------------
+;  SAMPLE class definition
+;------------------------------------------------------------------------------
+
+[ClassInstall32]
+AddReg=ClassInstall32AddReg
+CopyFiles=ClassInstall32CopyFiles
+
+[ClassInstall32AddReg]
+HKR,,,,"WDM Book Samples"
+HKR,,Installer32,,"samclass.dll,SampleClassInstaller"
+HKR,,EnumPropPages32,,samclass.dll
+HKR,,Icon,,101
+
+[ClassInstall32CopyFiles]
+samclass.dll,,,2
+
+[ClassInstall]
+AddReg=ClassInstallAddReg
+CopyFiles=ClassInstallCopyFiles
+
+[ClassInstallAddReg]
+HKR,,,,"WDM Book Samples"
+HKR,,EnumPropPages,,samcls16.dll
+HKR,,Icon,,102
+
+[ClassInstallCopyFiles]
+samcls16.dll,,,2
+
+;------------------------------------------------------------------------------
+;  Standard INF sections
+;------------------------------------------------------------------------------
+
+[Manufacturer]
+%MFGNAME%=DeviceList
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+ClassInstallCopyFiles=11
+ClassInstall32CopyFiles=11
+AutoLaunchCopyFiles=10
+AutoLaunch98CopyFiles=10
+
+[SourceDisksFiles]
+tstlnch.sys=1,objchk~1\i386,
+AutoLaunch.exe=1,objchk~1\i386,
+alnch98.exe=1,objchk~1\i386,
+altest.exe=1,objchk~1\i386,
+StartService.dll=1,objchk~1\i386,
+generic.sys=1,..\..\..\generic\objchk~1\i386,
+wdmstub.sys=1,..\..\..\Append~1\newstub\objchk~1\i386,
+samclass.dll=1,..\..\..\Chap15\samclass\release,
+samcls16.dll=1,..\..\..\Chap15\samclass\samcls16,
+
+[SourceDisksNames]
+1=%INSTDISK%,,,
+
+[DeviceList]
+%DESCRIPTION%=DriverInstall,*WCO1504
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.ntx86]
+CopyFiles=DriverCopyFiles,AutoLaunchCopyFiles
+AddReg=DriverAddReg.ntx86
+
+[DriverAddReg.ntx86]
+HKLM,%RUNONCEKEYNAME%,AutoLaunchStart,,"rundll32 StartService,StartService AutoLaunch"
+
+[DriverCopyFiles]
+tstlnch.sys,,,2
+generic.sys,,,2
+
+[DriverInstall.ntx86.Services]
+AddService=TSTLNCH,2,DriverService
+AddService=AutoLaunch,,AutoLaunchService
+
+[AutoLaunchCopyFiles]
+AutoLaunch.exe,,,0x60	; replace newer, suppress dialog
+altest.exe,,,0x10	; don't replace
+StartService.dll,,,0x60
+
+[AutoLaunchService]
+ServiceType=16
+StartType=2
+DisplayName="AutoLaunch Service"
+ErrorControl=1
+ServiceBinary=%10%\AutoLaunch.exe
+
+[DriverService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\tstlnch.sys
+
+[DriverInstall.ntx86.hw]
+AddReg=DriverHwAddReg
+
+[DriverHwAddReg]
+HKR,,SampleInfo,,"%wdmbook%\chap15\AutoLaunch\AutoLaunch.htm"
+HKR,,FriendlyName,,%FRIENDLYNAME%
+HKR,,AutoLaunch,,%AUTOLAUNCHCOMMAND%
+
+;------------------------------------------------------------------------------
+;  Windows 98 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall]
+AddReg=DriverAddReg
+CopyFiles=DriverCopyFiles,AutoLaunch98CopyFiles
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,tstlnch.sys
+HKLM,%RUNKEYNAME%,"AutoLaunchService",,alnch98.exe
+HKLM,%RUNONCEKEYNAME%,AutoLaunchStart,,"alnch98"
+
+[DriverInstall.HW]
+AddReg=DriverHwAddReg
+
+[AutoLaunch98CopyFiles]
+alnch98.exe,,,0x60
+altest.exe,,,0x10
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="Walter Oney Software"
+INSTDISK="Walter Oney Software Installation Disc"
+DESCRIPTION="AutoLaunch Test Device"
+FRIENDLYNAME="AutoLaunch Test Device"
+AUTOLAUNCHCOMMAND="%windir%\altest.exe %s %s"
+RUNKEYNAME="Software\Microsoft\Windows\CurrentVersion\Run"
+RUNONCEKEYNAME="Software\Microsoft\Windows\CurrentVersion\RunOnce"
+

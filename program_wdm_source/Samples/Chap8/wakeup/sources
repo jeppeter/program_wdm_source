@@ -1,0 +1,12 @@
+TARGETNAME=WAKEUP
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+TARGETPATH=obj
+USE_PDB=1
+
+INCLUDES=$(WDMBOOK)\generic
+TARGETLIBS=$(WDMBOOK)\generic\obj$(BUILD_ALT_DIR)\*\generic.lib $(DDK_LIB_PATH)\wmilib.lib 
+SOURCES=	DriverEntry.cpp \
+			power.cpp \
+			wmi.cpp \
+			driver.rc

@@ -1,0 +1,46 @@
+<html>
+
+<head>
+<title>The WHICHOS Sample</title>
+</head>
+
+<body>
+
+<div class=Section1>
+
+<h2>The WHICHOS Sample</h2>
+
+<p>The WHICHOS Sample accompanies Appendix A and illustrates how to determine
+the version of the operating system under which a WDM driver is running. This
+sample was added in Service Pack 9 for the 1st edition.</p>
+
+<p>The sample includes one component:</p>
+
+<ul>
+<li>WHICHOS.SYS is a WDM driver for a non-existent hardware device. </li>
+</ul>
+
+<h3>Building WHICHOS</h3>
+
+<p>To build WHICHOS.SYS, follow the <a href="..\..\wdmbook.htm#wdmbuild">general
+instructions for building a WDM sample</a>. The Microsoft Visual C++ project
+file is named WHICHOS.DSP.</p>
+
+<h3>Testing WHICHOS</h3>
+
+<p>First provide a way to view debug messages, for example by running DbgView
+from <a href="http://www.sysinternals.com/">http://www.sysinternals.com</a>. Follow
+the general instructions for using <a href="..\..\wdmbook.htm#fastinst">FastInst</a>
+in either Windows XP or Windows 98/Me. The INF file is named WHICHOS.INF.</p>
+
+<p>The DriverEntry function for WHICHOS determines which operating system is in
+use and prints a message to the debugging terminal. It then returns
+STATUS_UNSUCCESSFUL to abort loading the driver. To cleanup, you should open
+the Device Manager and uninstall WHICHOS.</p>
+
+<h3>What to look for</h3>
+<p>The <b>WhichOs</b> function in <b>DriverEntry.cpp</b> determines the OS version.</p>
+
+</body>
+
+</html>

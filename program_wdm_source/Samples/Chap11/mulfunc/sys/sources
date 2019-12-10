@@ -1,0 +1,13 @@
+TARGETNAME=mulfunc
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+USE_PDB=1
+INCLUDES=$(WDMBOOK)\GENERIC
+TARGETLIBS=$(WDMBOOK)\GENERIC\obj$(BUILD_ALT_DIR)\*\generic.lib \
+
+SOURCES= 	DriverEntry.cpp \
+		PlugPlayFdo.cpp \
+		PlugPlayPdo.cpp \
+		PowerFdo.cpp \
+		PowerPdo.cpp \
+		driver.rc

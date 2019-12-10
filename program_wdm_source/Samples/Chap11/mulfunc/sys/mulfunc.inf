@@ -1,0 +1,205 @@
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11d2-821E-444553540000}
+Provider=%MFGNAME%
+
+; Note: It's not typical to have the child devices and the parent device in a single
+; INF file, since they are typically from different classes. It would be more typical
+; for the parent INF to use a co-installer to copy the child device INF, which would
+; contain its own CopyFile, AddReg, Services, etc., sections.
+
+;------------------------------------------------------------------------------
+;  SAMPLE class definition
+;------------------------------------------------------------------------------
+
+[ClassInstall32]
+AddReg=ClassInstall32AddReg
+CopyFiles=ClassInstall32CopyFiles
+
+[ClassInstall32AddReg]
+HKR,,,,"WDM Book Samples"
+HKR,,Installer32,,"samclass.dll,SampleClassInstaller"
+HKR,,EnumPropPages32,,samclass.dll
+HKR,,Icon,,101
+
+[ClassInstall32CopyFiles]
+samclass.dll,,,2
+
+[ClassInstall]
+AddReg=ClassInstallAddReg
+CopyFiles=ClassInstallCopyFiles
+
+[ClassInstallAddReg]
+HKR,,,,"WDM Book Samples"
+HKR,,EnumPropPages,,samcls16.dll
+HKR,,Icon,,102
+
+[ClassInstallCopyFiles]
+samcls16.dll,,,2
+
+;------------------------------------------------------------------------------
+;  Standard INF sections
+;------------------------------------------------------------------------------
+
+[Manufacturer]
+%MFGNAME%=DeviceList
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+ClassInstallCopyFiles=11
+ClassInstall32CopyFiles=11
+
+[SourceDisksFiles]
+mulfunc.sys=1,objchk~1\i386,
+childa.sys=1,objchk~1\i386,
+childb.sys=1,objchk~1\i386,
+suballoc.sys=1,objchk~1\i386,
+generic.sys=1,..\..\..\generic\objchk~1\i386,
+wdmstub.sys=1,..\..\..\Append~1\newstub\objchk~1\i386,
+samclass.dll=1,..\..\..\Chap15\samclass\release,
+samcls16.dll=1,..\..\..\Chap15\samclass\samcls16,
+
+[SourceDisksNames]
+1=%INSTDISK%,,,
+
+[DeviceList]
+%DESCRIPTION%=DriverInstall,*WCO1103
+"Child A Device"=ChildAInstall,*WCO1104
+"Child B Device"=ChildBInstall,*WCO1105
+
+[ControlFlags]
+ExcludeFromSelect=*WCO1104,*WCO1105
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.ntx86]
+CopyFiles=DriverCopyFiles
+LogConfig=DriverLogConfig
+
+[DriverCopyFiles]
+mulfunc.sys,,,2
+childa.sys,,,2
+childb.sys,,,2
+suballoc.sys,,,2
+generic.sys,,,2
+
+[DriverInstall.ntx86.Services]
+AddService=MULFUNC,2,DriverService
+AddService=SUBALLOC,,SuballocService	; used by child devices
+
+[DriverService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\mulfunc.sys
+
+[DriverInstall.ntx86.hw]
+AddReg=DriverHwAddReg
+
+[DriverHwAddReg]
+HKR,,SampleInfo,,"%wdmbook%\chap6\mulfunc\mulfunc.htm"
+
+[DriverLogConfig]
+ConfigPriority=NORMAL
+IOConfig=1@100-3ff%ffff(3ff::)		; port for child A
+IOConfig=2@100-3ff%fffe(3ff::)		; ports for child B
+
+[SuballocService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\suballoc.sys
+
+[SuballocAddReg.ntx86]
+HKR,,UpperFilters,0x00010000,suballoc
+
+;----
+
+[ChildAInstall.ntx86]
+
+[ChildAInstall.ntx86.Services]
+AddService=CHILDA,2,ChildAService
+
+[ChildAService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\childa.sys
+
+[ChildAInstall.ntx86.HW]
+AddReg=SuballocAddReg.ntx86
+
+;----
+
+[ChildBInstall.ntx86]
+
+[ChildBInstall.ntx86.Services]
+AddService=CHILDB,2,ChildBService
+
+[ChildBService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\childb.sys
+
+[ChildBInstall.ntx86.HW]
+AddReg=SuballocAddReg.ntx86
+
+;------------------------------------------------------------------------------
+;  Windows 98 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall]
+AddReg=DriverAddReg
+CopyFiles=DriverCopyFiles,StubCopyFiles
+LogConfig=DriverLogConfig
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,"wdmstub.sys,mulfunc.sys"
+
+[StubCopyFiles]
+wdmstub.sys,,,2
+
+[DriverInstall.hw]
+AddReg=DriverHwAddReg
+
+[SuballocAddReg]
+HKR,,UpperFilters,0x00010000,suballoc.sys
+
+;----
+
+[ChildAInstall]
+AddReg=ChildAAddReg
+
+[ChildAAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,childa.sys
+
+[ChildAInstall.hw]
+AddReg=SuballocAddReg
+
+;----
+
+[ChildBInstall]
+AddReg=ChildBAddReg
+
+[ChildBAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,childb.sys
+
+[ChildBInstall.hw]
+AddReg=SuballocAddReg
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="Walter Oney Software"
+INSTDISK="Walter Oney Software Installation Disc"
+DESCRIPTION="Multifunction Sample"
+

@@ -1,0 +1,11 @@
+TARGETNAME=ChildB
+TARGETPATH=..\sys\obj$(BUILD_ALT_DIR)
+TARGETTYPE=DRIVER
+USE_PDB=1
+INCLUDES=$(WDMBOOK)\GENERIC
+TARGETLIBS=$(WDMBOOK)\GENERIC\obj$(BUILD_ALT_DIR)\*\generic.lib \
+
+SOURCES= 	DriverEntry.cpp \
+		ReadWrite.cpp \
+		stddcls.cpp \
+		driver.rc

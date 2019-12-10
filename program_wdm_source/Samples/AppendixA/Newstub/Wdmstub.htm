@@ -1,0 +1,88 @@
+<html>
+
+<head>
+<title>The WDMSTUB Sample</title>
+</head>
+
+<body>
+
+<h2>The New WDMSTUB Sample</h2>
+
+<p>The New WDMSTUB Sample accompanies Appendix A and illustrates how to supply
+stubs for kernel-mode support functions that would otherwise be missing from
+Windows 98. This sample was added in Service Pack 4 for the 1st edition.</p>
+
+<p>The sample includes one component:</p>
+
+<ul>
+ <li>WDMSTUB.SYS is a lower filter driver for use with Windows 98.</li>
+</ul>
+
+<h3>Building WDMSTUB</h3>
+
+<p>To build WDMSTUB.SYS, follow the 
+<a href="..\..\wdmbook.htm#wdmbuild">general instructions for building a WDM
+sample</a>. The project file is named WDMSTUB.DSP. The build settings
+depend on your having set the 98DDK environment variable to the directory
+where you installed the Windows 98 DDK. Depending on which version of the DDK
+you have, you may need to adjust the include or library paths in the project
+settings.</p>
+
+<h3>Testing WDMSTUB</h3>
+
+<p>You use WDMSTUB.SYS as a lower filter driver for any WDM driver that calls
+the functions it exports. Simply modify your regular INF file to include
+additional statements, such as the ones shown in red here:</p>
+
+<code>
+<pre>
+[SourceDisksFiles]
+yourdvr.sys=1
+<span style='color:red'>wdmstub.sys=1</span>
+
+[DriverInstall]
+CopyFiles=DriverCopyFiles
+AddReg=DriverAddReg
+
+[DriverCopyFiles]
+yourdvr.sys,,,2
+<span style='color:red'>wdmstub.sys,,,2</span>
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,"<span style='color:red'>wdmstub.sys,</span>,yourdvr.sys"
+</pre>
+</code>
+
+<p>These changes cause WDMSTUB.SYS to be installed as a lower filter driver for
+YOURDVR.SYS. Windows 98 will load WDMSTUB.SYS before it attempts to load
+YOURDVR.SYS. The DriverEntry function in WDMSTUB defines a number of
+kernel-mode support functions that are missing from Windows 98 and Windows 98
+Second Edition. Since WDMSTUB defines these functions <i>before</i> the system
+attempts to load your driver, you can install your driver without requiring a
+reboot.</p>
+
+<h3>Redistributing WDMSTUB</h3>
+
+<p>WDMSTUB is an exception to the blanket license to use the sample programs
+for this book. The author will grant a royalty-free license to anyone to
+redistribute WDMSTUB as part of a WDM driver package. The license will,
+however, include conditions designed to insure the consistency and quality of
+WDMSTUB on end user machines. Send e-mail to
+<a href="mailto:waltoney@oneysoft.com">waltoney@oneysoft.com</a> for information
+about obtaining this conditional license.</p>
+
+<p>Note: A special license is required even if you ship WDMSTUB under a
+different name. This driver includes special checking to make sure that it does
+not unload while some other vendor’s driver might be using it, and the special
+license will insure that you preserve that checking.</p>
+
+<h3>What to look for</h3>
+<p>WDMSTUB is primarily a production driver rather than a sample. If you want to see how to define
+your own exports, look at the function named <b>DefineStubs</b> in <b>wdmstub.cpp</b>. <i>Please
+don't write your own version of WDMSTUB to export some special function you need in your driver.
+Write me (<a href="mailto:waltoney@oneysoft.com">waltoney@oneysoft.com</a>) instead.</i></p>
+
+</body>
+
+</html>

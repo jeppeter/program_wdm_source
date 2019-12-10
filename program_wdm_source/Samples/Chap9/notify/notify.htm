@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+
+<H2>The NOTIFY Sample</H2>
+<P>The NOTIFY Sample accompanies Chapter 9 and illustrates how to use an I/O Control operation to send a notification to a user-mode application.
+This sample was completely revised for the 2d edition to use GENERIC.SYS.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>NOTIFY.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console program that tests NOTIFY.SYS.</LI></UL>
+
+<H3>Building NOTIFY</H3>
+<P>To build NOTIFY.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named NOTIFY.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing NOTIFY</H3>
+<P>Install NOTIFY.SYS. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows XP or Windows 98/Me. The INF file is named SYS\NOTIFY.INF.</P>
+<P>To test NOTIFY, open a command prompt and launch TEST.EXE from the TEST\DEBUG subdirectory. TEST will use an I/O control operation to wait for an "interesting" event from NOTIFY. 
+You trigger the "interesting" event by pressing a key, whereupon the test program simulates a hardware event to complete the I/O control operation. You can perform three different tests:</P>
+
+<UL>
+<LI>Type a key. TEST will print a message to the effect that the event has happened, and then it will exit. </LI>
+<LI>Type Ctrl+Break. TEST will exit. If you’re watching in a debugger, you should find that NOTIFY correctly cleans up. </LI>
+<LI>Use the Device Manager to disable or remove the NOTIFY device. You will have to terminate TEST with Ctrl+Break, but you should find that NOTIFY correctly cleans up.</LI>
+</UL>
+
+<h3>What to look for</h3>
+<p>The point of this sample is to show how to use the <b>GenericCacheControlRequest</b> and <b>GenericUncacheControlRequest</b> functions to keep track of a pending
+IOCTL request in a cancel-safe way. Refer to the code in <b>control.cpp</b>. 
+You can refer to the code in GENERIC.SYS to see how these functions work.
+</BODY>
+</HTML>

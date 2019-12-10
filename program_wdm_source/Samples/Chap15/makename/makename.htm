@@ -1,0 +1,50 @@
+<HTML>
+<HEAD>
+<TITLE>The MAKENAME Sample</TITLE>
+</HEAD>
+<BODY>
+
+<H2>The MAKENAME Sample</H2>
+<P>The MAKENAME Sample accompanies Chapter 15 and illustrates how to generate a unique friendly name during a device installation. </P>
+<P>The sample includes one component: </P>
+
+<UL>
+<LI>MAKENAME.DLL is a DLL for use as part of a device installation procedure. </LI></UL>
+
+<H3>Building MAKENAME</H3>
+<P>To build MAKENAME.DLL, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named MAKENAME.DSP. </P>
+<H3>Testing MAKENAME</H3>
+<P>You can test MAKENAME as follows. First, select a device that doesn't already have a friendly name in its hardware registry key. Then open a command prompt and execute a command like the following one:</P>
+<CODE><P>C:&gt;<U>rundll32 makename,MakeName "DeviceDesc" "FriendlyName (%d)"</P>
+</U></CODE><P>Here, DeviceDesc is the device description, exactly as it appears in the target device's hardware registry key, and FriendlyName is a friendly name string. To make up a completely fictitious example, suppose you've got an Acme brand toaster whose DeviceDesc is "Acme model 90240". A plausible experiment to make would be:</P>
+<CODE><P>C:&gt;<U>rundll32 makename,MakeName "Acme model 90240" "Acme Toaster (%d)"</P>
+</U></CODE><H3>Using MAKENAME</H3>
+<P>MAKENAME.DLL is intended for use in a RUNDLL32 command that you would install into the RunOnce registry key via statements in your INF file. Your INF file could, for example, contain the following: </P>
+<CODE><P>[DestinationDirs]<BR>
+MakeNameCopyFiles=11<BR>
+<BR>
+[DeviceList]<BR>
+"Acme model 90240"=DriverInstall,*WCO1204<BR>
+<BR>
+[DriverInstall]<BR>
+CopyFiles=MakeNameCopyFiles[...]<BR>
+AddReg=MakeNameAddReg<BR>
+<BR>
+[DriverInstall.nt]<BR>
+CopyFiles=MakeNameCopyFiles[...]<BR>
+AddReg=MakeNameAddReg<BR>
+<BR>
+[MakeNameCopyFiles]<BR>
+makename.dll,,,0x60<BR>
+<BR>
+[MakeNameAddReg]<BR>
+HKLM,%RUNONCEKEYNAME%,ToasterFriendlyName,,"rundll32 makename,MakeName ""Acme model 90240"" ""Acme Toaster (%d)"""<BR>
+<BR>
+[Strings]<BR>
+</CODE><FONT FACE="Courier New" SIZE=2>RUNONCEKEYNAME="Software\Microsoft\Windows\CurrentVersion\RunOnce"</P></FONT>
+
+<h3>What to look for</h3>
+<p><b>MakeName.cpp</b> is the important file in this sample.</p>
+
+</BODY>
+</HTML>

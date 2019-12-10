@@ -1,0 +1,11 @@
+TARGETNAME=eventlog
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+USE_PDB=1
+INCLUDES=$(WDMBOOK)\generic
+TARGETLIBS=$(WDMBOOK)\generic\obj$(BUILD_ALT_DIR)\*\generic.lib \
+
+SOURCES= 	DriverEntry.cpp \
+		ReadWrite.cpp \
+		EventLog.mc \
+		driver.rc

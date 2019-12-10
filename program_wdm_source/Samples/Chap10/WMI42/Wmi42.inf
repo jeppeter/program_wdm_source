@@ -1,0 +1,91 @@
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11d2-821E-444553540000}
+Provider="Walter Oney Software"
+
+;------------------------------------------------------------------------------
+;  SAMPLE class definition
+;------------------------------------------------------------------------------
+
+[ClassInstall32]
+AddReg=ClassInstall32AddReg
+CopyFiles=ClassInstall32CopyFiles
+
+[ClassInstall32AddReg]
+HKR,,,,"WDM Book Samples"
+HKR,,Installer32,,"samclass.dll,SampleClassInstaller"
+HKR,,EnumPropPages32,,samclass.dll
+HKR,,Icon,,101
+
+[ClassInstall32CopyFiles]
+samclass.dll,,,2
+
+[ClassInstall]
+AddReg=ClassInstallAddReg
+CopyFiles=ClassInstallCopyFiles
+
+[ClassInstallAddReg]
+HKR,,,,"WDM Book Samples"
+HKR,,EnumPropPages,,samcls16.dll
+HKR,,Icon,,102
+
+[ClassInstallCopyFiles]
+samcls16.dll,,,2
+
+;------------------------------------------------------------------------------
+;  Standard INF sections
+;------------------------------------------------------------------------------
+
+[Manufacturer]
+"Walter Oney Software"=WCO
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+ClassInstallCopyFiles=11
+ClassInstall32CopyFiles=11
+
+[SourceDisksFiles]
+Wmi42.sys=1,objchk~1\i386,
+generic.sys=1,..\..\generic\objchk~1\i386,
+wdmstub.sys=1,..\..\Append~1\newstub\objchk~1\i386,
+samclass.dll=1,..\..\Chap15\samclass\release,
+samcls16.dll=1,..\..\Chap15\samclass\samcls16,
+
+[SourceDisksNames]
+1="Install disk",,,
+
+[WCO]
+"Wmi42 Sample"=Wmi42Install,*WCO1001
+
+[Wmi42Install]
+AddReg=Wmi42.AddReg
+CopyFiles=Wmi42.CopyFiles
+
+[Wmi42.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,Wmi42.sys
+
+[Wmi42.CopyFiles]
+Wmi42.sys,,,2
+
+[Wmi42Install.hw]
+AddReg=Wmi42HwAddReg
+
+[Wmi42HwAddReg]
+HKR,,SampleInfo,,"%wdmbook%\chap10\wmi42\wmi42.htm"
+
+[Wmi42Install.ntx86]
+CopyFiles=Wmi42.CopyFiles
+
+[Wmi42Install.ntx86.Services]
+AddService=Wmi42,2,Wmi42Service
+
+[Wmi42Service]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\Wmi42.sys
+
+[Wmi42Install.ntx86.hw]
+AddReg=Wmi42HwAddReg

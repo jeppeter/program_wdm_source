@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+
+<H2>The WMIEXTRA Sample</H2>
+<P>The WMIEXTRA Sample accompanies Chapter 10 and illustrates some more advanced features of WMI, including:</P>
+
+<UL>
+<LI>Firing a WMI event </LI>
+<LI>Collecting "expensive" statistics </LI>
+<LI>Executing a method routine</LI></UL>
+
+<P>The sample includes one component: WMIEXTRA.SYS is a WDM driver for a non-existent hardware device. </p>
+
+<H3>Building WMIEXTRA</H3>
+<P>To build WMIEXTRA.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named WMIEXTRA.DSP.</P>
+
+<H3>Testing WMIEXTRA</H3>
+<P>Install WMIEXTRA.SYS. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows XP Windows 98/Me. The INF file is named WMIEXTRA.INF.</P>
+<P>If you're testing in Windows 98/Me, please refer to the general instructions for <A HREF="../../wdmbook.htm#wmi98/Me">WMI in Windows 98/Me</A> for additional information.</P>
+<P>Once you’ve installed WMIEXTRA, launch <a href="test.htm">TEST.HTM</a> in your web browser. This page presents a form with buttons for testing WMIEXTRA's schema.</P>
+
+<h3>What to look for</h3>
+<p>Most of the interesting code in this sample is in <b>wmi.cpp</b>. Refer to the IOCTL_FIRE_EVENT 
+handler in <b>control.cpp</b> for an example of how to fire a WMI event.</p>
+
+</BODY>
+</HTML>

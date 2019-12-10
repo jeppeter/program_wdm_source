@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<TITLE>The LOOPBACK Sample</TITLE>
+</HEAD>
+<BODY >
+
+<H2>The LOOPBACK Sample</H2>
+<P>The LOOPBACK Sample accompanies Chapter 12 and illustrates how to do input and output to a bulk transfer pipe. This sample accommodates application requests of any size by recycling a single IRP.
+The sample was modified for the 2d edition to incorporate service pack fixes and to add error recovery.</P>
+<P>The sample includes three components:</P>
+
+<UL>
+<LI>LOOPBACK.SYS (SYS subdirectory) is a WDM driver for a USB device based on the Anchor Chips development board. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console application for testing LOOPBACK.SYS. </LI>
+<LI>LOOPBACK.HEX (EZUSB subdirectory) is the firmware image for the LOOPBACK device.</LI></UL>
+
+<H3>Building LOOPBACK</H3>
+<P>To build LOOPBACK.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named LOOPBACK.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing LOOPBACK</H3>
+<P>First follow the <A HREF="../../wdmbook.htm#usbtest">general instructions for testing USB samples</A> to install the device firmware (LOOPBACK.HEX in the EZUSB subdirectory) and the driver. Then open a command prompt and run TEST.EXE from the TEST\DEBUG subdirectory. TEST will output some data to the LOOPBACK device, read it back, and compare the input data to the output data to verify successful operation.</P>
+<P>Test accepts a command line argument in the range 1-1024 to specify how many 32-bit data words it will transfer. If you specify a value bigger than 256, you'll force the
+driver to exercise the multi-segment transfer logic.</P>
+
+<h3>Special note about power management</h3>
+<p>This driver doesn't automatically repower the device when the computer comes out of standby. I recommend not putting the computer through a power cycle with this device connected.
+A more realistic driver would establish some sort of policy about when the device should be powered and would use techinques like shown in the <a href="../../chap8/wakeup/wakeup.htm">WAKEUP</a>
+sample to enforce that policy.</p>
+
+<h3>What to look for</h3>
+<p>The important routines in this sample are <b>StartIo</b> and <b>OnReadWriteComplete</b>, both in
+<b>ReadWrite.cpp</b>.</p>
+
+</BODY>
+</HTML>

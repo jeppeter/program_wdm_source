@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<TITLE>The HARDERR Sample</TITLE>
+</HEAD>
+<BODY>
+
+<H2>The HARDERR Sample</H2>
+<P>The HARDERR Sample accompanies Appendix A and illustrates how to log an I/O error. The real purpose of this sample is to demonstrate how to use the Windows 98/Me implementation of <B>IoRaiseInformationalHardError</B> that was added to WDMSTUB.VXD in Service Pack 2 for the 1st edition.</P>
+<P>The sample includes one component:</P>
+
+<UL>
+<LI>HARDERR.SYS is a WDM driver for a non-existent hardware device. </LI></UL>
+
+<H3>Building HARDERR</H3>
+<P>To build HARDERR.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named HARDERR.DSP.</P>
+<H3>Testing HARDERR</H3>
+<P>Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in either Windows XP or Windows 98/Me. The INF file is named HARDERR.INF. Each time you start the HARDERR device (including the first time, which occurs during installation), it will call <B>IoRaiseInformationalHardError</B>, which will in turn display a dialog box informing you of an unspecified error.</P>
+
+<h3>What to look for</h3>
+<p>It would more interesting to look at the implementation of <b>IoRaiseInformationalHardError</b>
+in <a href="../newstub/wdmstub.htm">wdmstub.sys</a> than at this sample.</p>
+
+</body>
+</HTML>

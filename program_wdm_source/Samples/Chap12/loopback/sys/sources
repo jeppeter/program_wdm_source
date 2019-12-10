@@ -1,0 +1,12 @@
+TARGETNAME=loopback
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+TARGETLIBS=\
+		$(WDMBOOK)\GENERIC\obj$(BUILD_ALT_DIR)\*\generic.lib \
+		$(DDK_LIB_PATH)\usbd.lib
+USE_PDB=1
+INCLUDES=$(WDMBOOK)\GENERIC
+
+SOURCES= 	DriverEntry.cpp \
+		readwrite.cpp \
+		stddcls.cpp

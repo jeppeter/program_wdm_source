@@ -1,0 +1,14 @@
+TARGETNAME=wmiextra
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+USE_PDB=1
+
+INCLUDES=$(WDMBOOK)\generic
+NTTARGETFILE0=mofcomp
+TARGETLIBS=$(WDMBOOK)\generic\obj$(BUILD_ALT_DIR)\*\generic.lib \
+	   $(DDK_LIB_PATH)\wmilib.lib 
+SOURCES= 	DriverEntry.cpp \
+		control.cpp \
+		ReadWrite.cpp \
+		wmi.cpp \
+		driver.rc

@@ -1,0 +1,14 @@
+TARGETNAME=polling
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+USE_PDB=1
+
+C_DEFINES = $(C_DEFINES) /DDDKBUILD		# to bypass VxD includes
+INCLUDES=$(WDMBOOK)\GENERIC
+
+TARGETLIBS=$(WDMBOOK)\GENERIC\obj$(BUILD_ALT_DIR)\*\generic.lib \
+
+SOURCES= 	DriverEntry.cpp \
+		ReadWrite.cpp \
+		stddcls.cpp \
+		driver.rc

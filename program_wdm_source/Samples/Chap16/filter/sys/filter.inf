@@ -1,0 +1,71 @@
+; Sample INF for installing a filter driver for a specific device
+; Copyright (C) 1999 by Walter Oney
+; All rights reserved
+
+; To use this INF file, pick an existing device on your computer and substitute
+; its name for "IOCTL Sample Device" in two places here. FILTER.SYS will require
+; WDMSTUB.SYS on Win98/Me. If the driver stack you're filtering doesn't already have
+; WDMSTUB in it, you should uncomment the obvious line near the end of this INF file
+
+[Version]
+Signature=$CHICAGO$
+Provider=%MFGNAME%
+
+[DestinationDirs]
+DefaultDestDir=10,system32\drivers
+FiltJectCopyFiles=11
+
+[SourceDisksFiles]
+filter.sys=1
+filtject.dll=1
+
+[SourceDisksNames]
+1=%INSTDISK%,,,objchk_wxp_x86\i386
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DefaultInstall.ntx86]
+CopyFiles=DriverCopyFiles,FiltJectCopyFiles
+AddReg=FiltJectAddReg.ntx86
+
+[DriverCopyFiles]
+filter.sys,,,0x60		; replace newer, suppress dialog
+
+[FiltJectCopyFiles]
+filtject.dll,,,0x60
+
+[FiltJectAddReg.ntx86]
+HKLM,%RUNONCEKEYNAME%,InjectFilter,,"rundll32 filtject,InjectFilter ""IOCTL Sample Device"" filter"
+
+[DefaultInstall.ntx86.services]
+AddService=filter,,FilterService
+
+[FilterService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\filter.sys
+
+;------------------------------------------------------------------------------
+;  Windows 98 Sections
+;------------------------------------------------------------------------------
+
+[DefaultInstall]
+CopyFiles=DriverCopyFiles,FiltJectCopyFiles
+AddReg=FiltJectAddReg
+
+[FiltJectAddReg]
+HKLM,%RUNONCEKEYNAME%,InjectFilter,,"rundll32 filtject,InjectFilter ""IOCTL Sample Device"" filter.sys"
+;HKLM,%RUNONCEKEYNAME%,InjectFilter,,"rundll32 filtject,InjectFilter ""IOCTL Sample Device"" wdmstub.sys -lower"
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="Walter Oney Software"
+INSTDISK="WDM Book Companion Disc"
+DESCRIPTION="Sample Filter Driver"
+RUNONCEKEYNAME="Software\Microsoft\Windows\CurrentVersion\RunOnce"

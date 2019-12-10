@@ -1,0 +1,48 @@
+<HTML>
+<HEAD>
+<TITLE>The USBINT Sample</TITLE>
+</HEAD>
+<BODY>
+
+<H2>The USBINT Sample</H2>
+<P>The USBINT Sample accompanies Chapter 12 and illustrates how to program an interrupt endpoint.
+This sample was modified for the 2d edition to eliminate automatic power up on handle open in the
+interest of reducing confusion.</P>
+<P>The sample includes three components:</P>
+
+<UL>
+<LI>USBINT.SYS (SYS subdirectory) is a WDM driver for a USB device based on the Anchor Chips development board. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console application for testing USBINT.SYS. </LI>
+<LI>USBINT.HEX (EZUSB subdirectory) is the firmware image for the USBINT device.</LI></UL>
+
+<H3>Building USBINT</H3>
+<P>To build USBINT.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named USBINT.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing USBINT</H3>
+<P>First follow the <A HREF="../../wdmbook.htm#usbtest">general instructions for testing USB samples</A> to install the device firmware (USBINT.HEX in the EZUSB subdirectory) and the driver. Then open a command prompt and run TEST.EXE from the TEST\DEBUG subdirectory. It will appear to hang. Press button number 1 on the Anchor Chips development board. Each time you press the button, the LED display will change, and TEST will record another interrupt. Terminate TEST by pressing Ctrl+Break.</P>
+
+<h3>Special note about power management</h3>
+<p>This is the only USB sample driver that concerns itself with power management. Try to run this sample on a computer that supports a standby state. Before the driver allows the
+device to power down, it will cancel the outstanding interrupt read. This is a requirement of the USB parent driver -- you can't reduce the power to a USB device with any IRP other than
+an IRP_MN_WAIT_WAKE outstanding. Conversely, after power is restored, the driver restarts the interrupt read.</p>
+
+<p>In order to operate correctly, this driver uses three callbacks from GENERIC.SYS that aren't used in most of the samples in the book:</p>
+
+<table border>
+<tr><td>GetDevicePowerState<td>Returns D0 for the S0 state
+<tr><td>SaveContext<td>Halts the interrupt read
+<tr><td>RestoreContext<td>Reissues the interrupt read
+</table>
+
+<p>There is really no way to properly program an interrupt endpoint except by including these callback routines in your driver. You might design the driver to leave your device
+in a low power state most of the time, possibly with wakeup enabled. Refer to the <a href="../../chap8/wakeup/wakeup.htm">WAKEUP</a> sample for code examples. You would not need to
+modify the callback routines in this driver to add on wakeup and automatic power-down behavior.</p>
+
+<h3>What to look for</h3>
+<p>The key function in this driver is <b>StartInterruptUrb</b> (ReadWrite.cpp), which issues and
+reissues the read against the interrupt endpoint. The devil in this particular sample is in all
+the details about when a read is started and cancelled in response to various PnP and power events,
+so you basically have to read the whole driver very carefully.</p>
+
+</BODY>
+</HTML>

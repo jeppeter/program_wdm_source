@@ -1,0 +1,7 @@
+TARGETNAME=filter
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+USE_PDB=1
+
+SOURCES= 	DriverEntry.cpp \
+		driver.rc

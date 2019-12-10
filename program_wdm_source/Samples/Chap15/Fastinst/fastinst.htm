@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<TITLE>The FASTINST Sample</TITLE>
+</HEAD>
+<BODY>
+
+<H2>The FASTINST Sample</H2>
+<P>The FASTINST Sample accompanies Chapter 15 and illustrates how to write a simple setup program for Windows XP or Windows 98/Me. The real purpose of FASTINST is to allow you (and me!) to quickly install a sample driver.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>FASTINST.EXE is a Windows XP setup program that installs the first (or only) device in a specified INF file.</LI>
+<LI>FASTINST.EXE (WIN98/Me subdirectory) is a Windows 98/Me setup program that installs the first (or only) device in a specified INF file.</LI></UL>
+
+<H3>Building FASTINST</H3>
+<P>To build the Windows XP version of FASTINST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named FASTINST.DSP.</P>
+<P>To build the Windows 98/Me version of FASTINST.EXE, use a 16-bit compiler such as Microsoft Visual C++ version 1.52. The project file is named WIN98/Me\FASTINST.MAK.</P>
+
+<H3>Using FASTINST</H3>
+<P>You can invoke FASTINST from a Windows XP command prompt, as follows:</P>
+<DIR>
+<DIR>
+
+<FONT FACE="Courier New"><P>C:\WDMBOOK\Chap15\FastInst\debug&gt;<U>fastinst infpath [devid]</P>
+</DIR>
+</DIR>
+
+</U></FONT><P>where <B>infpath</B> is the pathname of the INF file you want to install and <B>devid</B> is an optional device identifier. If you omit the <B>devid</B> parameter, FASTINST installs the first (or only) device in the file. If you supply the <B>devid</B> parameter, FASTINST will install the designated device.</P>
+<P>Note that the progress dialog you see while FASTINST executes is a fake (driven by a timer) designed to reassure you that something is happening during the sometimes time-consuming process of installing a driver.</P>
+
+<p>In Windows 98/Me, use the 16-bit version instead, like this:</p>
+<DIR>
+<DIR>
+
+<FONT FACE="Courier New"><P>C:\WDMBOOK\Chap15\FastInst\win98&gt;<U>fastinst infpath [devid]</u></font></P>
+</DIR>
+</DIR>
+
+<p>I recommend, however, that you follow the <A HREF="../../wdmbook.htm#fastinst">general instructions for using FastInst</A> to setup a context menu command that you can use from Explorer.<p>
+
+<h3>What to look for</h3>
+<p><b>FastInst.cpp</b> is the main program for this application. Don't overlook the 16-bit version
+in the <b>win98</b> directory.</p>
+
+</BODY>
+</HTML>
